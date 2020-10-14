@@ -40,8 +40,10 @@ df$htcat <- factor(df$htcat, levels=c('short','below average','above average','t
 
 library(lattice)
 
+jpeg('./Figure/ex_02_violin.jpg')
 bwplot(weight ~ bodycat, data = df, panel = panel.violin,
        xlab = "bodycat", ylab = "weight")
+dev.off()
 
 # 4. Create a stem-and-leaf plot for weight. Be sure to find an appropriate scale for the data.
 
@@ -51,6 +53,7 @@ stem(df$weight, scale=1)
 # 5. (a) Create overlapping histograms of neck for the three body categories. For this exercise, do not use the default breaks. Use breaks that you think make sense. Remember to make sure that the first histogram is an appropriate window size so when you "add" the other graphs, those histograms aren't cut-off.
 # (b) In the same window, add 3 density plots--1 for each body category. Do not use the default bandwidth. Use a bandwidth that you think makes sense.
 # (c) In complete sentences, compare neck circumference across the three body categories using your histograms and density plots.
+jpeg('./Figure/ex_02_hist.jpg')
 
 hist(df[df$bodycat == 'athlete',]$neck, 
      col=rgb(1,0,0,0.25),
@@ -84,3 +87,38 @@ lines(dens1,col=rgb(1,0,0,1),lwd=2)
 lines(dens2,col=rgb(0,1,0,1),lwd=2)
 lines(dens3,col=rgb(0,0,1,1),lwd=2)
 
+dev.off()
+
+# 6.	Repeat Question 5 for abdomen
+
+hist(df[df$bodycat == 'athlete',]$abdomen, 
+     col=rgb(1,0,0,0.25),
+     ylim=c(0,0.35),
+     breaks=seq(30,55,by=1),
+     cex.axis = 0.8, 
+     freq = F,
+     main = "Histogram of Neck Size", 
+     xlab = "Neck Size"
+)
+hist(df[df$bodycat == 'average',]$abdomen,
+     col=rgb(0,1,0,0.25),
+     ylim=c(0,0.35),
+     breaks=seq(30,55,by=1),
+     cex.axis = 0.8, 
+     freq = F,
+     add = T)
+hist(df[df$bodycat == 'obese',]$abdomen,
+     col=rgb(0,0,1,0.25),
+     ylim=c(0,0.35),
+     breaks=seq(30,55,by=1),
+     cex.axis = 0.8, 
+     freq = F,
+     add = T)
+legend("topright", c("Athlete", "Average", "Obese"), col=c(rgb(1,0,0,0.25),rgb(0,1,0,0.25),rgb(0,0,1,0.25)), lwd=10)
+
+dens1 <- density(df[df$bodycat == 'athlete',]$abdomen, bw = 0.3)
+dens2 <- density(df[df$bodycat == 'average',]$abdomen, bw = 0.3)
+dens3 <- density(df[df$bodycat == 'obese',]$abdomen, bw = 0.3)
+lines(dens1,col=rgb(1,0,0,1),lwd=2)
+lines(dens2,col=rgb(0,1,0,1),lwd=2)
+lines(dens3,col=rgb(0,0,1,1),lwd=2)
